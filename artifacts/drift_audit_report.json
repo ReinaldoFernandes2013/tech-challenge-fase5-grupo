@@ -1,0 +1,435 @@
+{
+  "val_2023_2024": {
+    "window": "2023->2024 (Validacao)",
+    "timestamp_utc": "2026-11-19T10:13:35.045535+00:00",
+    "retrain_triggered": true,
+    "severe_drift_count": 7,
+    "moderate_drift_count": 4,
+    "severe_features": [
+      "anos_na_ong",
+      "ieg",
+      "ips",
+      "ipv",
+      "ing",
+      "gap_iaa_ida",
+      "media_psico"
+    ],
+    "moderate_features": [
+      "iaa",
+      "ida",
+      "mat",
+      "gap_ieg_ida"
+    ],
+    "features": {
+      "fase_num": {
+        "psi": 0.0172,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0486,
+        "ks_pvalue": 0.4395,
+        "ref_mean": 1.756,
+        "cur_mean": 1.875
+      },
+      "idade": {
+        "psi": 0.0249,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0377,
+        "ks_pvalue": 0.8723,
+        "ref_mean": 11.596,
+        "cur_mean": 11.426
+      },
+      "anos_na_ong": {
+        "psi": 0.2977,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.0977,
+        "ks_pvalue": 0.0049,
+        "ref_mean": 1.505,
+        "cur_mean": 1.617
+      },
+      "defasagem": {
+        "psi": 0.091,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.1208,
+        "ks_pvalue": 0.0002,
+        "ref_mean": -0.895,
+        "cur_mean": -0.661
+      },
+      "inde": {
+        "psi": 0.0875,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0928,
+        "ks_pvalue": 0.0089,
+        "ref_mean": 7.261,
+        "cur_mean": 7.45
+      },
+      "iaa": {
+        "psi": 0.2069,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1771,
+        "ks_pvalue": 0.0,
+        "ref_mean": 8.489,
+        "cur_mean": 6.983
+      },
+      "ieg": {
+        "psi": 0.2901,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.2035,
+        "ks_pvalue": 0.0,
+        "ref_mean": 8.329,
+        "cur_mean": 8.863
+      },
+      "ips": {
+        "psi": 1.3647,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.4127,
+        "ks_pvalue": 0.0,
+        "ref_mean": 6.873,
+        "cur_mean": 5.155
+      },
+      "ida": {
+        "psi": 0.1355,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1021,
+        "ks_pvalue": 0.0029,
+        "ref_mean": 6.497,
+        "cur_mean": 6.824
+      },
+      "ipv": {
+        "psi": 0.5357,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.3243,
+        "ks_pvalue": 0.0,
+        "ref_mean": 7.419,
+        "cur_mean": 8.121
+      },
+      "ian": {
+        "psi": 0.0195,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.1208,
+        "ks_pvalue": 0.0002,
+        "ref_mean": 6.526,
+        "cur_mean": 7.168
+      },
+      "mat": {
+        "psi": 0.2091,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1237,
+        "ks_pvalue": 0.0001,
+        "ref_mean": 6.151,
+        "cur_mean": 6.547
+      },
+      "por": {
+        "psi": 0.0582,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0825,
+        "ks_pvalue": 0.0275,
+        "ref_mean": 6.745,
+        "cur_mean": 7.033
+      },
+      "ing": {
+        "psi": 0.2731,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.1733,
+        "ks_pvalue": 0.0079,
+        "ref_mean": 6.475,
+        "cur_mean": 6.28
+      },
+      "tem_nota_ing": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.044,
+        "ks_pvalue": 0.5669,
+        "ref_mean": 0.27,
+        "cur_mean": 0.314
+      },
+      "pedra_ord": {
+        "psi": 0.0254,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0784,
+        "ks_pvalue": 0.0414,
+        "ref_mean": 2.749,
+        "cur_mean": 2.923
+      },
+      "pedra_anterior_ord": {
+        "psi": 0.0289,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0398,
+        "ks_pvalue": 0.9221,
+        "ref_mean": 2.807,
+        "cur_mean": 2.857
+      },
+      "delta_pedra_1y": {
+        "psi": 0.0105,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0338,
+        "ks_pvalue": 0.8548,
+        "ref_mean": -0.049,
+        "cur_mean": -0.01
+      },
+      "delta_inde_1y": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.3215,
+        "ks_pvalue": 0.0,
+        "ref_mean": 0.0,
+        "cur_mean": -0.019
+      },
+      "gap_iaa_ida": {
+        "psi": 0.2779,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.1906,
+        "ks_pvalue": 0.0,
+        "ref_mean": 1.992,
+        "cur_mean": 0.159
+      },
+      "gap_ieg_ida": {
+        "psi": 0.1405,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1001,
+        "ks_pvalue": 0.0037,
+        "ref_mean": 1.833,
+        "cur_mean": 2.039
+      },
+      "media_psico": {
+        "psi": 0.517,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.1998,
+        "ks_pvalue": 0.0,
+        "ref_mean": 7.055,
+        "cur_mean": 6.963
+      },
+      "genero_bin": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0084,
+        "ks_pvalue": 1.0,
+        "ref_mean": 0.521,
+        "cur_mean": 0.529
+      },
+      "escola_publica": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0036,
+        "ks_pvalue": 1.0,
+        "ref_mean": 0.856,
+        "cur_mean": 0.853
+      }
+    }
+  },
+  "oot_2024_2025": {
+    "window": "2024->2025 (Pos-Reestruturacao Fases)",
+    "timestamp_utc": "2026-11-19T10:13:35.062534+00:00",
+    "retrain_triggered": true,
+    "severe_drift_count": 4,
+    "moderate_drift_count": 8,
+    "severe_features": [
+      "anos_na_ong",
+      "defasagem",
+      "ips",
+      "ing"
+    ],
+    "moderate_features": [
+      "fase_num",
+      "idade",
+      "inde",
+      "ieg",
+      "mat",
+      "por",
+      "delta_pedra_1y",
+      "media_psico"
+    ],
+    "features": {
+      "fase_num": {
+        "psi": 0.1921,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1817,
+        "ks_pvalue": 0.0,
+        "ref_mean": 1.756,
+        "cur_mean": 2.579
+      },
+      "idade": {
+        "psi": 0.1212,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1086,
+        "ks_pvalue": 0.0019,
+        "ref_mean": 11.596,
+        "cur_mean": 12.347
+      },
+      "anos_na_ong": {
+        "psi": 5.5508,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.4561,
+        "ks_pvalue": 0.0,
+        "ref_mean": 1.505,
+        "cur_mean": 2.167
+      },
+      "defasagem": {
+        "psi": 0.2707,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.228,
+        "ks_pvalue": 0.0,
+        "ref_mean": -0.895,
+        "cur_mean": -0.386
+      },
+      "inde": {
+        "psi": 0.159,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.144,
+        "ks_pvalue": 0.0,
+        "ref_mean": 7.261,
+        "cur_mean": 7.424
+      },
+      "iaa": {
+        "psi": 0.0233,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.1267,
+        "ks_pvalue": 0.0002,
+        "ref_mean": 8.489,
+        "cur_mean": 8.582
+      },
+      "ieg": {
+        "psi": 0.216,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1205,
+        "ks_pvalue": 0.0004,
+        "ref_mean": 8.329,
+        "cur_mean": 8.094
+      },
+      "ips": {
+        "psi": 0.3541,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.4693,
+        "ks_pvalue": 0.0,
+        "ref_mean": 6.873,
+        "cur_mean": 6.686
+      },
+      "ida": {
+        "psi": 0.0337,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0589,
+        "ks_pvalue": 0.2516,
+        "ref_mean": 6.497,
+        "cur_mean": 6.43
+      },
+      "ipv": {
+        "psi": 0.0504,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0758,
+        "ks_pvalue": 0.0659,
+        "ref_mean": 7.419,
+        "cur_mean": 7.34
+      },
+      "ian": {
+        "psi": 0.0327,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.228,
+        "ks_pvalue": 0.0,
+        "ref_mean": 6.526,
+        "cur_mean": 7.71
+      },
+      "mat": {
+        "psi": 0.2312,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.094,
+        "ks_pvalue": 0.0107,
+        "ref_mean": 6.151,
+        "cur_mean": 6.248
+      },
+      "por": {
+        "psi": 0.1684,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1257,
+        "ks_pvalue": 0.0002,
+        "ref_mean": 6.745,
+        "cur_mean": 6.278
+      },
+      "ing": {
+        "psi": 0.2505,
+        "status": "SEVERO_RETREINAR",
+        "ks_statistic": 0.12,
+        "ks_pvalue": 0.1019,
+        "ref_mean": 6.475,
+        "cur_mean": 6.827
+      },
+      "tem_nota_ing": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.2063,
+        "ks_pvalue": 0.0,
+        "ref_mean": 0.27,
+        "cur_mean": 0.476
+      },
+      "pedra_ord": {
+        "psi": 0.0194,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.1471,
+        "ks_pvalue": 0.0,
+        "ref_mean": 2.749,
+        "cur_mean": 2.912
+      },
+      "pedra_anterior_ord": {
+        "psi": 0.0158,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0706,
+        "ks_pvalue": 0.2497,
+        "ref_mean": 2.807,
+        "cur_mean": 2.919
+      },
+      "delta_pedra_1y": {
+        "psi": 0.2243,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1315,
+        "ks_pvalue": 0.0001,
+        "ref_mean": -0.049,
+        "cur_mean": -0.01
+      },
+      "delta_inde_1y": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.5067,
+        "ks_pvalue": 0.0,
+        "ref_mean": 0.0,
+        "cur_mean": -0.029
+      },
+      "gap_iaa_ida": {
+        "psi": 0.0285,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.062,
+        "ks_pvalue": 0.2012,
+        "ref_mean": 1.992,
+        "cur_mean": 2.152
+      },
+      "gap_ieg_ida": {
+        "psi": 0.0661,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0762,
+        "ks_pvalue": 0.0638,
+        "ref_mean": 1.833,
+        "cur_mean": 1.664
+      },
+      "media_psico": {
+        "psi": 0.2,
+        "status": "MODERADO_INVESTIGAR",
+        "ks_statistic": 0.1158,
+        "ks_pvalue": 0.0007,
+        "ref_mean": 7.055,
+        "cur_mean": 7.186
+      },
+      "genero_bin": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0076,
+        "ks_pvalue": 1.0,
+        "ref_mean": 0.521,
+        "cur_mean": 0.529
+      },
+      "escola_publica": {
+        "psi": 0.0,
+        "status": "ESTAVEL",
+        "ks_statistic": 0.0632,
+        "ks_pvalue": 0.1846,
+        "ref_mean": 0.856,
+        "cur_mean": 0.793
+      }
+    }
+  }
+}

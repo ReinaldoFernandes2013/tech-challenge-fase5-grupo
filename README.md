@@ -13,17 +13,16 @@ Pipeline de Machine Learning e engenharia MLOps aplicado aos dados longitudinais
 
 ---
 
+
 ## Trajetória Analítica até a Fase 5
 
-A construção desta solução apoia-se na evolução progressiva ao longo das fases do programa, unindo rigor analítico, modelagem, aprendizagem profunda/NLP e engenharia de MLOps:
+A construção desta solução apoia-se na evolução progressiva ao longo das fases do programa, unindo rigor analítico, modelagem, aprendizagem profunda/NLP e engenharia de MLOps[cite: 10]:
 
 * **Fase 1 — Estruturação analítica e risco com CRISP-DM:** base metodológica de entendimento do problema, preparação de dados e modelagem de risco (`payflow-risk-model-crispdm`) com foco em validação e disciplina analítica.
 * **Fase 2 — Pipelines e dados educacionais:** amadurecimento de fluxos de processamento e avaliação em contexto educacional (`pipeline-hibrido-alfabetizacao-brasil`).
 * **Fase 3 — Machine Learning e MLOps:** consolidação de práticas de treino, avaliação, registo e operacionalização de modelos.
-* **Fase 4 — Deep Learning and NLP:** aprofundamento em arquiteturas neurais e processamento de linguagem natural, ampliando a leitura de sinais complexos e não lineares.
-* **Fase 5 — MLOps Longitudinal na Passos Mágicos (PEDE 2022–2025):** aplicação de desenho *anti-leakage* ($t \rightarrow t+1$), validação *out-of-time*, análise de *drift* (KS e PSI, incluindo os impactos da reestruturação de 2025), governação com *MLflow Registry* e *Quality Gate*, serviço em *FastAPI*, visualização interativa em *Streamlit* (com apoio *Human-in-the-Loop* e análise por janela e `escola_publica`) e automação de testes/qualidade.
-
----
+* **Fase 4 — Deep Learning and NLP:** aprofundamento em arquiteturas neurais e processamento de linguagem natural, ampliando a leitura de sinais complexos e não lineares[cite: 10].
+* **Fase 5 — MLOps Longitudinal na Passos Mágicos (PEDE 2022–2025):** aplicação de desenho *anti-leakage* ($t \rightarrow t+1$), validação *out-of-time*, análise de *drift* (KS e PSI, incluindo os impactos da reestruturação de 2025), governação com *MLflow Registry* e *Quality Gate*, serviço em *FastAPI*, visualização interativa em *Streamlit* (com apoio *Human-in-the-Loop* e análise por janela e `escola_publica`) e automação de testes/qualidade[cite: 10].
 
 ## 2. Estrutura do Repositório
 

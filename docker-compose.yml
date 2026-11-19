@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    container_name: passos-magicos-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+
+  streamlit:
+    build: .
+    container_name: passos-magicos-ui
+    command: ["streamlit", "run", "src/app/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped

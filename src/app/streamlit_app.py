@@ -20,6 +20,114 @@ st.set_page_config(
     layout="wide",
 )
 
+if "ui_theme" not in st.session_state:
+    st.session_state["ui_theme"] = "Night Mode"
+
+_, theme_col = st.columns([8, 2])
+with theme_col:
+    selected_theme = st.radio(
+        "Modo de exibição",
+        options=["Night Mode", "Light Mode"],
+        index=0 if st.session_state["ui_theme"] == "Night Mode" else 1,
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+    st.session_state["ui_theme"] = selected_theme
+
+is_night = st.session_state["ui_theme"] == "Night Mode"
+plotly_template = "plotly_dark" if is_night else "plotly_white"
+
+if is_night:
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #0e1117;
+            color: #fafafa;
+        }
+        [data-testid="stMetric"] {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .stApp p, .stApp label, .stApp span, .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+            color: #0f172a;
+        }
+        [data-testid="stMetric"] {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        [data-testid="stPlotlyChart"] text,
+        [data-testid="stPlotlyChart"] .gtitle,
+        [data-testid="stPlotlyChart"] .xtitle,
+        [data-testid="stPlotlyChart"] .ytitle,
+        [data-testid="stPlotlyChart"] .legendtext,
+        [data-testid="stPlotlyChart"] .annotation-text {
+            fill: #0f172a !important;
+            color: #0f172a !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+_orig_plotly_chart = st.plotly_chart
+def _themed_plotly_chart(fig, *args, **kwargs):
+    fg = "#f8fafc" if is_night else "#0f172a"
+    grid = "rgba(248, 250, 252, 0.14)" if is_night else "rgba(15, 23, 42, 0.14)"
+    try:
+        fig.layout.template = plotly_template
+        fig.layout.paper_bgcolor = "rgba(0,0,0,0)"
+        fig.layout.plot_bgcolor = "rgba(0,0,0,0)"
+        fig.layout.font.color = fg
+        if fig.layout.title and fig.layout.title.font:
+            fig.layout.title.font.color = fg
+        if fig.layout.legend and fig.layout.legend.font:
+            fig.layout.legend.font.color = fg
+        if fig.layout.legend and fig.layout.legend.title and fig.layout.legend.title.font:
+            fig.layout.legend.title.font.color = fg
+        fig.update_xaxes(
+            color=fg,
+            linecolor=fg,
+            tickcolor=fg,
+            gridcolor=grid,
+            title_font=dict(color=fg),
+            tickfont=dict(color=fg),
+        )
+        fig.update_yaxes(
+            color=fg,
+            linecolor=fg,
+            tickcolor=fg,
+            gridcolor=grid,
+            title_font=dict(color=fg),
+            tickfont=dict(color=fg),
+        )
+        for ann in fig.layout.annotations or []:
+            if ann.font:
+                ann.font.color = fg
+            else:
+                ann.font = dict(color=fg)
+    except Exception:
+        pass
+    return _orig_plotly_chart(fig, *args, **kwargs)
+st.plotly_chart = _themed_plotly_chart
+
+
 st.title("🎓 Associação Passos Mágicos — Sistema de Apoio Psicopedagógico (MLOps)")
 st.info(
     "**Diretriz de Uso Responsável (Human-in-the-Loop):** Este sistema fornece sinais estatísticos "
@@ -28,10 +136,11 @@ st.info(
     "como rótulos definitivos nem substituir a avaliação humana multidisciplinar.**"
 )
 
-tab1, tab2, tab3 = st.tabs([
+tab1, tab2, tab3, tab4 = st.tabs([
     "🔍 Simulador & Triagem Individual (XAI)",
     "🛡️ Quality Gate & Governança MLflow",
     "📡 Observabilidade & Drift (PSI 2022–2025)",
+    "📊 Panorama Cohort & Escola (2022–2025)",
 ])
 
 with tab1:
@@ -166,3 +275,100 @@ with tab3:
         fig_psi.add_hline(y=0.10, line_dash="dot", line_color="orange", annotation_text="Limiar Moderado (0.10)")
         st.plotly_chart(fig_psi, use_container_width=True)
         st.dataframe(psi_df, use_container_width=True)
+
+
+with tab4:
+    st.subheader("Panorama por Tipo de Escola e Janela Temporal (2022–2025)")
+    st.caption(
+        "Análise descritiva comparativa entre estudantes de escola pública e não pública nas janelas "
+        "temporais processadas, sem inferência geográfica artificial."
+    )
+
+    split_specs = [
+        ("2022→2023 (Treino)", ROOT_DIR / "data" / "processed" / "train_2022_2023.parquet"),
+        ("2023→2024 (Validação)", ROOT_DIR / "data" / "processed" / "val_2023_2024.parquet"),
+        ("2024→2025 (Teste OOT)", ROOT_DIR / "data" / "processed" / "test_2024_2025.parquet"),
+    ]
+
+    frames = []
+    for label, fp in split_specs:
+        if fp.exists():
+            df_split = pd.read_parquet(fp).copy()
+            df_split["janela"] = label
+            frames.append(df_split)
+
+    if not frames:
+        st.warning("Nenhum arquivo Parquet encontrado em `data/processed/` para montar o panorama.")
+    else:
+        cohort_df = pd.concat(frames, ignore_index=True)
+
+        if "escola_publica" in cohort_df.columns:
+            cohort_df["tipo_escola"] = cohort_df["escola_publica"].map({
+                1.0: "Escola Pública",
+                1: "Escola Pública",
+                0.0: "Não Pública",
+                0: "Não Pública",
+            }).fillna("Não Informado")
+        else:
+            cohort_df["tipo_escola"] = "Não Informado"
+
+        metric_candidates = [
+            c for c in ["target", "inde", "ian", "defasagem", "ieg", "ips", "ida", "ipv"]
+            if c in cohort_df.columns
+        ]
+
+        if not metric_candidates:
+            st.warning("Nenhuma coluna numérica de indicador/target disponível nos splits processados.")
+        else:
+            selected_metric = st.selectbox(
+                "Indicador para comparativo por janela e tipo de escola",
+                options=metric_candidates,
+                index=0,
+            )
+
+            agg_df = (
+                cohort_df.groupby(["janela", "tipo_escola"], as_index=False)
+                .agg(
+                    n_estudantes=("tipo_escola", "count"),
+                    valor_medio=(selected_metric, "mean"),
+                )
+            )
+
+            c_left, c_right = st.columns(2)
+            with c_left:
+                fig_bar = px.bar(
+                    agg_df,
+                    x="janela",
+                    y="valor_medio",
+                    color="tipo_escola",
+                    barmode="group",
+                    text_auto=".2f",
+                    title=f"Média de `{selected_metric}` por Janela e Tipo de Escola",
+                )
+                st.plotly_chart(fig_bar, use_container_width=True)
+
+            with c_right:
+                fig_vol = px.bar(
+                    agg_df,
+                    x="janela",
+                    y="n_estudantes",
+                    color="tipo_escola",
+                    barmode="group",
+                    text_auto=True,
+                    title="Volume de Estudantes por Janela e Tipo de Escola",
+                )
+                st.plotly_chart(fig_vol, use_container_width=True)
+
+            heat_cols = [c for c in ["target", "inde", "ian", "defasagem", "ieg", "ips"] if c in cohort_df.columns]
+            if heat_cols:
+                cohort_df["estrato"] = cohort_df["janela"] + " | " + cohort_df["tipo_escola"]
+                heat_df = cohort_df.groupby("estrato", as_index=True)[heat_cols].mean()
+                fig_heat = px.imshow(
+                    heat_df,
+                    text_auto=".2f",
+                    aspect="auto",
+                    title="Matriz de Médias dos Indicadores por Janela e Tipo de Escola",
+                )
+                st.plotly_chart(fig_heat, use_container_width=True)
+
+            st.dataframe(agg_df, use_container_width=True)

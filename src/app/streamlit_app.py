@@ -15,6 +15,8 @@ import streamlit as st
 from src.config import settings
 from src.api.schemas import StudentIndicatorsInput
 from src.api.main import load_champion_bundle, build_feature_row
+from src.app.xai_local import compute_local_shap_explanation
+from src.app.calibration_diag import compute_calibration_diagnostics
 
 st.set_page_config(
     page_title="Passos Mágicos | MLOps & Apoio Psicopedagógico",
@@ -196,6 +198,7 @@ with tab1:
             delta_inde_1y=delta_inde_1y,
         )
         bundle = load_champion_bundle()
+        X_row = build_feature_row(payload)
         api_url = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/")
         used_api = False
         try:
@@ -206,11 +209,9 @@ with tab1:
                 thr = float(api_data["threshold_aplicado"])
                 used_api = True
             else:
-                X_row = build_feature_row(payload)
                 proba = float(bundle["model"].predict_proba(X_row)[0, 1])
                 thr = float(bundle["threshold"])
         except Exception:
-            X_row = build_feature_row(payload)
             proba = float(bundle["model"].predict_proba(X_row)[0, 1])
             thr = float(bundle["threshold"])
 
@@ -243,6 +244,32 @@ with tab1:
         )
         st.plotly_chart(fig, use_container_width=True)
 
+        shap_res = compute_local_shap_explanation(bundle, X_row, top_n=10)
+        st.markdown("### Explicabilidade Local da Simulação Atual (SHAP)")
+        if shap_res["available"] and not shap_res["df"].empty:
+            st.caption(
+                f"Valor base esperado (classe positiva): `{shap_res['base_value']}` | "
+                "Valores SHAP positivos aumentam o sinal de atenção (t+1); negativos reduzem."
+            )
+            shap_df = shap_res["df"].sort_values("Impacto SHAP", ascending=True)
+            fig_local = px.bar(
+                shap_df,
+                x="Impacto SHAP",
+                y="Variavel",
+                color="Direcao",
+                orientation="h",
+                hover_data=["Valor na Simulacao"],
+                title="Contribuição Individual das Variáveis para Este Estudante",
+            )
+            fig_local.add_vline(x=0.0, line_dash="dash", line_color="gray")
+            st.plotly_chart(fig_local, use_container_width=True)
+            st.dataframe(
+                shap_res["df"][["Variavel", "Valor na Simulacao", "Impacto SHAP", "Direcao"]],
+                use_container_width=True,
+            )
+        else:
+            st.info(f"Explicabilidade local indisponível no momento: {shap_res['reason']}")
+
 with tab2:
     st.subheader("Auditoria de Promoção — Quality Gate Automatizado (Requisito 6)")
     qg_path = settings.ARTIFACTS_DIR / "quality_gate_report.json"
@@ -260,6 +287,52 @@ with tab2:
                 {"Modelo": f"Campeão ({qg['champion_model']})", **qg["val_metrics"]},
             ])[["Modelo", "pr_auc", "roc_auc", "f2", "recall", "precision", "brier_score"]]
             st.dataframe(comp_df, use_container_width=True)
+
+        st.markdown("---")
+        st.subheader("Calibração de Probabilidades & Reliability Diagram (2023→2024 vs. OOT 2024→2025)")
+        val_fp = ROOT_DIR / "data" / "processed" / "val_2023_2024.parquet"
+        tst_fp = ROOT_DIR / "data" / "processed" / "test_2024_2025.parquet"
+        if val_fp.exists() and tst_fp.exists():
+            try:
+                bundle_cal = load_champion_bundle()
+                feat_cols = bundle_cal["feature_columns"]
+                val_df = pd.read_parquet(val_fp)
+                tst_df = pd.read_parquet(tst_fp)
+                p_val_raw = bundle_cal["model"].predict_proba(val_df[feat_cols])[:, 1]
+                p_tst_raw = bundle_cal["model"].predict_proba(tst_df[feat_cols])[:, 1]
+                cal_res = compute_calibration_diagnostics(
+                    y_true=tst_df["target"].to_numpy(),
+                    y_proba_raw=p_tst_raw,
+                    n_bins=8,
+                    y_fit_true=val_df["target"].to_numpy(),
+                    y_fit_proba=p_val_raw,
+                )
+                if cal_res["available"] and not cal_res["curve_df"].empty:
+                    c_left_cal, c_right_cal = st.columns([1, 1.4])
+                    with c_left_cal:
+                        st.markdown("#### Comparativo de Brier Score (Teste OOT 2024→2025)")
+                        st.dataframe(cal_res["summary_df"], use_container_width=True)
+                        st.caption(
+                            "Calibradores ajustados em `val_2023_2024` e avaliados fora da amostra em `test_2024_2025`, "
+                            "evidenciando o efeito da calibração pós-treino e do shift de 2025."
+                        )
+                    with c_right_cal:
+                        curve_df = cal_res["curve_df"].copy()
+                        fig_cal = px.line(
+                            curve_df,
+                            x="Probabilidade Prevista Média",
+                            y=["Frequência Observada (Positivos)", "Probabilidade Prevista Média"],
+                            markers=True,
+                            title="Reliability Diagram (Curva de Confiabilidade — Teste OOT 2024→2025)",
+                        )
+                        st.plotly_chart(fig_cal, use_container_width=True)
+                    st.dataframe(cal_res["curve_df"], use_container_width=True)
+                else:
+                    st.info(f"Diagnóstico de calibração indisponível: {cal_res['reason']}")
+            except Exception as exc:
+                st.info(f"Não foi possível calcular o diagnóstico de calibração nesta execução: {exc}")
+        else:
+            st.info("Arquivos de validação/teste OOT não encontrados em `data/processed/` para o Reliability Diagram.")
 
 with tab3:
     st.subheader("Monitoramento de Estabilidade Populacional (PSI) e Reestruturação 2025")

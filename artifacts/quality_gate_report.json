@@ -1,6 +1,6 @@
 {
   "champion_model": "candidate_random_forest",
-  "champion_run_id": "38efb3ba73ae49e38c401de10f20b82b",
+  "champion_run_id": "8683c66fea79439089726187ce85ba7c",
   "approved": true,
   "checks": {
     "min_pr_auc": {

@@ -42,7 +42,14 @@ A construção desta solução apoia-se na evolução progressiva ao longo das f
 python -m venv .venv
 source .venv/Scripts/activate
 pip install -r requirements.txt
+flake8 src tests --max-line-length=120 --ignore=E501,W503,E402
 PYTHONPATH=. pytest -v tests/
+```
+
+### Docker Compose
+
+```bash
+docker compose up --build
 ```
 
 ```Shell
@@ -55,10 +62,6 @@ Os três notebooks em `notebooks/` (`01_eda_and_data_quality.ipynb`,`02_feature_
 
 * **Métricas de Avaliação:** Foco em PR-AUC, ROC-AUC, Recall e F2-Score diante do desbalanceamento de classes e do custo assimétrico de falsos negativos.
 
-Quality Gate e MLflow: Promoção condicionada a critérios objetivos frente ao baseline heurístico, com registro de métricas e artefatos em artifacts/.
+- **Quality Gate e MLflow:** Promoção condicionada a critérios objetivos frente ao baseline heurístico, com registro de métricas e artefatos em `artifacts/`.
 
-Limitações e Human-in-the-Loop: Mudanças estruturais (como a reestruturação de 2025) podem provocar drift severo (
-PSI
-≥
-0.25
-PSI≥0.25) e perda de calibração probabilística. O modelo apoia a triagem humana (Human-in-the-Loop), sem substituir avaliação pedagógica/psicossocial nem dispensar retreinamento ou recalibração periódicos.
+- **Limitações e Human-in-the-Loop:** Mudanças estruturais (como a reestruturação de 2025) podem provocar drift severo (`PSI >= 0.25`) e perda de calibração probabilística. O modelo apoia a triagem humana (*Human-in-the-Loop*), sem substituir avaliação pedagógica/psicossocial nem dispensar retreinamento ou recalibração periódicos.

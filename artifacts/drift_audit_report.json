@@ -1,7 +1,7 @@
 {
   "val_2023_2024": {
-    "window": "2023->2024 (Validacao)",
-    "timestamp_utc": "2026-11-19T10:13:35.045535+00:00",
+    "window": "val_2023_2024",
+    "timestamp_utc": "2026-11-24T10:27:50.814929+00:00",
     "retrain_triggered": true,
     "severe_drift_count": 7,
     "moderate_drift_count": 4,
@@ -216,8 +216,8 @@
     }
   },
   "oot_2024_2025": {
-    "window": "2024->2025 (Pos-Reestruturacao Fases)",
-    "timestamp_utc": "2026-11-19T10:13:35.062534+00:00",
+    "window": "oot_2024_2025",
+    "timestamp_utc": "2026-11-24T10:27:50.830434+00:00",
     "retrain_triggered": true,
     "severe_drift_count": 4,
     "moderate_drift_count": 8,

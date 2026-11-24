@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -7,6 +8,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import pandas as pd
+import requests
 import plotly.express as px
 import streamlit as st
 
@@ -87,6 +89,8 @@ else:
     )
 
 _orig_plotly_chart = st.plotly_chart
+
+
 def _themed_plotly_chart(fig, *args, **kwargs):
     fg = "#f8fafc" if is_night else "#0f172a"
     grid = "rgba(248, 250, 252, 0.14)" if is_night else "rgba(15, 23, 42, 0.14)"
@@ -125,8 +129,9 @@ def _themed_plotly_chart(fig, *args, **kwargs):
     except Exception:
         pass
     return _orig_plotly_chart(fig, *args, **kwargs)
-st.plotly_chart = _themed_plotly_chart
 
+
+st.plotly_chart = _themed_plotly_chart
 
 st.title("🎓 Associação Passos Mágicos — Sistema de Apoio Psicopedagógico (MLOps)")
 st.info(
@@ -191,9 +196,23 @@ with tab1:
             delta_inde_1y=delta_inde_1y,
         )
         bundle = load_champion_bundle()
-        X_row = build_feature_row(payload)
-        proba = float(bundle["model"].predict_proba(X_row)[0, 1])
-        thr = float(bundle["threshold"])
+        api_url = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/")
+        used_api = False
+        try:
+            resp = requests.post(f"{api_url}/predict", json=payload.model_dump(), timeout=3)
+            if resp.ok:
+                api_data = resp.json()
+                proba = float(api_data["probabilidade_risco"])
+                thr = float(api_data["threshold_aplicado"])
+                used_api = True
+            else:
+                X_row = build_feature_row(payload)
+                proba = float(bundle["model"].predict_proba(X_row)[0, 1])
+                thr = float(bundle["threshold"])
+        except Exception:
+            X_row = build_feature_row(payload)
+            proba = float(bundle["model"].predict_proba(X_row)[0, 1])
+            thr = float(bundle["threshold"])
 
         m1, m2, m3 = st.columns(3)
         m1.metric("Probabilidade Estimada de Risco (t+1)", f"{proba:.1%}")
@@ -275,7 +294,6 @@ with tab3:
         fig_psi.add_hline(y=0.10, line_dash="dot", line_color="orange", annotation_text="Limiar Moderado (0.10)")
         st.plotly_chart(fig_psi, use_container_width=True)
         st.dataframe(psi_df, use_container_width=True)
-
 
 with tab4:
     st.subheader("Panorama por Tipo de Escola e Janela Temporal (2022–2025)")

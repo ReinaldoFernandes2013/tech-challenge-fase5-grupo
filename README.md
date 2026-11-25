@@ -76,4 +76,10 @@ O modelo foi treinado, registrado e publicado na Databricks Free Edition:
 
 O endpoint exige autenticação e retorna a classe com o corte padrão de 0,5, e não o limiar de 0,38 definido no projeto.
 
-Evidências em `docs/evidencias/`.
+
+### Evidências
+
+![Endpoint na versão 3](docs/evidencias/01-endpoint-versao3.png)
+![Teste do endpoint](docs/evidencias/02-teste-endpoint.png)
+![Versões do modelo](docs/evidencias/03-versoes-modelo.png)
+![Modelo com 23 variáveis](docs/evidencias/04-modelo-23-variaveis.png)

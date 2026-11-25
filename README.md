@@ -51,6 +51,50 @@ A construção desta solução apoia-se na evolução progressiva ao longo das f
 
 ---
 
+## Arquitetura da Solução
+
+O pipeline vai do dado bruto até a decisão humana, passando por um Quality Gate antes do registro do modelo:
+
+```
+        [ Base PEDE (Excel, ciclos 2022-2025) ]
+                         |
+                         v
+        [ Validação de Entrada: data_validation.py ]
+                         |
+                         v
+   [ Features Longitudinais: ciclo t -> risco em t+1 ]
+      23 variáveis (sem genero_bin) | Split temporal
+                         |
+                         v
+   [ Treino e Seleção do Campeão: Random Forest ]
+            Rastreamento no MLflow
+                         |
+                         v
+   [ Quality Gate: métricas, calibração e XAI ]
+                         |
+            reprovado    |    aprovado
+         (não registra)  v
+   [ Registro: Unity Catalog (Databricks), versão 3 ]
+                         |
+         +---------------+----------------+
+         v                                v
+ [ Model Serving: Databricks ]    [ API FastAPI (Docker) ]
+                                           |
+                    +----------------------+----------------+
+                    v                                       v
+     [ Dashboard Streamlit + XAI local ]     [ Log de Auditoria (JSONL) ]
+                    |                                       |
+                    |                                       v
+                    |                   [ Auditoria de Drift: PSI + KS ]
+                    |                       (sob demanda, vs. base de referência)
+                    |                                       |
+                    +-------------------+-------------------+
+                                        v
+               [ Revisão Humana: Equipe Pedagógica decide ]
+```
+
+---
+
 ## 3. Como Executar Localmente
 
 ### Ambiente, Lint e Suíte de 12 Testes

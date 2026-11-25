@@ -10,7 +10,7 @@ Por isso, este projeto foi desenhado como um **radar preventivo com apoio *Human
 
 Ao longo da construção, cada camada técnica respondeu a um desafio concreto dos dados longitudinais:
 
-1. **Respeitar o tempo sem vazar o futuro:** os splits cronológicos (`2022→2023`, `2023→2024` e teste OOT `2024→2025`) e as 24 features garantem que o treino não "espie" o futuro nem estatísticas globais.
+1. **Respeitar o tempo sem vazar o futuro:** os splits cronológicos (`2022→2023`, `2023→2024` e teste OOT `2024→2025`) e as 23 features garantem que o treino não "espie" o futuro nem estatísticas globais.
 2. **Priorizar quem não pode ficar para trás:** como deixar de apoiar um estudante em risco tem custo assimétrico, o *Quality Gate* avalia *PR-AUC*, *ROC-AUC* e *Recall* com limiar calibrado via *F2-Score* (`0.38`) frente ao *baseline* heurístico.
 3. **Explicar cada caso e auditar a confiança das probabilidades:** o módulo SHAP local (`xai_local.py`) mostra o que puxa o risco para cima ou para baixo em uma simulação específica, enquanto `calibration_diag.py` compara probabilidade bruta, *Isotonic* e *Platt scaling* (*Brier Score* e *Reliability Diagram*) fora da amostra.
 4. **Enxergar quando o mundo muda:** quando a reestruturação metodológica de 2025 altera a distribuição das variáveis (*domain shift*), o monitoramento de *drift* (**PSI** e **KS**) sinaliza a mudança e dispara o gatilho de retreinamento em vez de deixar o modelo operar "no escuro".
@@ -62,3 +62,18 @@ pip install -r requirements.txt
 flake8 src tests --max-line-length=120 --ignore=E501,W503,E402
 PYTHONPATH=. pytest -v tests/
 ```
+
+## Deploy na Databricks
+
+O modelo foi treinado, registrado e publicado na Databricks Free Edition:
+
+- **Treino:** pipeline do projeto executado em notebook, com rastreamento no MLflow.
+- **Registro:** Unity Catalog, `workspace.default.passos_magicos_risk_classifier`, versão 3.
+- **Modelo:** Random Forest com 23 variáveis, sem `genero_bin`, aprovado no Quality Gate.
+- **Serving:** endpoint `passos-magicos-risk-classifier` (CPU 4 GB, scale to zero).
+- **URL:** https://dbc-6beb4054-21cf.cloud.databricks.com/serving-endpoints/passos-magicos-risk-classifier/invocations
+- **Teste:** 3 registros de validação, resposta `[0, 0, 1]`.
+
+O endpoint exige autenticação e retorna a classe com o corte padrão de 0,5, e não o limiar de 0,38 definido no projeto.
+
+Evidências em `docs/evidencias/`.

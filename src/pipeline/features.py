@@ -29,7 +29,6 @@ FEATURE_COLUMNS = [
     "gap_iaa_ida",
     "gap_ieg_ida",
     "media_psico",
-    "genero_bin",
     "escola_publica",
 ]
 
@@ -160,7 +159,6 @@ def engineer_features(df_t: pd.DataFrame) -> pd.DataFrame:
     X["gap_ieg_ida"] = X["ieg"] - X["ida"]
     # 3) Indice composto psicossocial-pedagogico
     X["media_psico"] = np.nanmean(np.vstack([X["ips"], X["ipp"].fillna(X["ips"]), X["ipv"]]), axis=0)
-    X["genero_bin"] = df_t["genero_bin"]
     X["escola_publica"] = df_t["escola_publica"]
     return X[FEATURE_COLUMNS].astype("float64")
 

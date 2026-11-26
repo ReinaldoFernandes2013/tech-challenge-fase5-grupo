@@ -13,7 +13,7 @@ Ao longo da construção, cada camada técnica respondeu a um desafio concreto d
 1. **Respeitar o tempo sem vazar o futuro:** os splits cronológicos (`2022→2023`, `2023→2024` e teste OOT `2024→2025`) e as 23 features garantem que o treino não "espie" o futuro nem estatísticas globais.
 2. **Priorizar quem não pode ficar para trás:** como deixar de apoiar um estudante em risco tem custo assimétrico, o *Quality Gate* avalia *PR-AUC*, *ROC-AUC* e *Recall* com limiar calibrado via *F2-Score* (`0.38`) frente ao *baseline* heurístico.
 3. **Explicar cada caso e auditar a confiança das probabilidades:** o módulo SHAP local (`xai_local.py`) mostra o que puxa o risco para cima ou para baixo em uma simulação específica, enquanto `calibration_diag.py` compara probabilidade bruta, *Isotonic* e *Platt scaling* (*Brier Score* e *Reliability Diagram*) fora da amostra.
-4. **Enxergar quando o mundo muda:** quando a reestruturação metodológica de 2025 altera a distribuição das variáveis (*domain shift*), o monitoramento de *drift* (**PSI** e **KS**) sinaliza a mudança e dispara o gatilho de retreinamento em vez de deixar o modelo operar "no escuro".
+4. **Enxergar quando o mundo muda:** quando a reestruturação metodológica de 2025 altera a distribuição das variáveis (*domain shift*), o monitoramento de *drift* (**PSI** e **KS**) sinaliza a mudança, sob demanda, para que a equipe decida sobre o retreinamento em vez de deixar o modelo operar "no escuro".
 
 ---
 

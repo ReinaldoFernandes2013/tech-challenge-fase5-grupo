@@ -20,7 +20,6 @@ class StudentIndicatorsInput(BaseModel):
     pedra_ord: float = Field(..., ge=1.0, le=4.0, description="Pedra atual (1=Quartzo, 2=Agata, 3=Ametista, 4=Topazio)")
     pedra_anterior_ord: Optional[float] = Field(default=None, ge=1.0, le=4.0, description="Pedra no ano anterior (1 a 4)")
     delta_inde_1y: float = Field(default=0.0, ge=-10.0, le=10.0, description="Variacao do INDE no ultimo ano")
-    genero_bin: float = Field(default=1.0, ge=0.0, le=1.0, description="1=Feminino/Menina, 0=Masculino/Menino")
     escola_publica: float = Field(default=1.0, ge=0.0, le=1.0, description="1=Escola Publica, 0=Rede Privada/Parceira")
 
 

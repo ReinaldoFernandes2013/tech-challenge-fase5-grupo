@@ -60,7 +60,6 @@ def build_feature_row(payload: StudentIndicatorsInput) -> pd.DataFrame:
         "gap_iaa_ida": gap_iaa_ida,
         "gap_ieg_ida": gap_ieg_ida,
         "media_psico": media_psico,
-        "genero_bin": payload.genero_bin,
         "escola_publica": payload.escola_publica,
     }
     return pd.DataFrame([row])[FEATURE_COLUMNS].astype("float64")

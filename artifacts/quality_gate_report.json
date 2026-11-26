@@ -1,16 +1,16 @@
 {
   "champion_model": "candidate_random_forest",
-  "champion_run_id": "38efb3ba73ae49e38c401de10f20b82b",
+  "champion_run_id": "c62e7a2dcbfb42538d0409dcf4c1da82",
   "approved": true,
   "checks": {
     "min_pr_auc": {
       "passed": true,
-      "actual": 0.4994,
+      "actual": 0.4992,
       "required": 0.42
     },
     "min_roc_auc": {
       "passed": true,
-      "actual": 0.822,
+      "actual": 0.8188,
       "required": 0.72
     },
     "min_recall": {
@@ -20,37 +20,37 @@
     },
     "beats_heuristic_baseline_pr_auc": {
       "passed": true,
-      "actual_gain": 0.0787,
+      "actual_gain": 0.0785,
       "required_margin": 0.03
     }
   },
   "val_metrics": {
-    "pr_auc": 0.4994,
-    "roc_auc": 0.822,
-    "f1": 0.5281,
-    "f2": 0.6564,
-    "precision": 0.3983,
+    "pr_auc": 0.4992,
+    "roc_auc": 0.8188,
+    "f1": 0.5296,
+    "f2": 0.6573,
+    "precision": 0.4,
     "recall": 0.7833,
-    "brier_score": 0.1326,
+    "brier_score": 0.1338,
     "threshold": 0.38,
-    "tn": 416,
-    "fp": 142,
+    "tn": 417,
+    "fp": 141,
     "fn": 26,
     "tp": 94
   },
   "test_oot_metrics": {
-    "pr_auc": 0.2298,
-    "roc_auc": 0.5508,
-    "f1": 0.3107,
-    "f2": 0.3868,
-    "precision": 0.234,
-    "recall": 0.4622,
-    "brier_score": 0.2357,
+    "pr_auc": 0.2296,
+    "roc_auc": 0.5484,
+    "f1": 0.3042,
+    "f2": 0.3792,
+    "precision": 0.2288,
+    "recall": 0.4538,
+    "brier_score": 0.2374,
     "threshold": 0.38,
-    "tn": 295,
-    "fp": 180,
-    "fn": 64,
-    "tp": 55
+    "tn": 293,
+    "fp": 182,
+    "fn": 65,
+    "tp": 54
   },
   "baseline_val_metrics": {
     "pr_auc": 0.4207,
